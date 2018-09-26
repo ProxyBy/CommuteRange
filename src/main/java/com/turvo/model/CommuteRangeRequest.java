@@ -1,4 +1,4 @@
-package com.logistics.model;
+package com.turvo.model;
 
 import lombok.Data;
 

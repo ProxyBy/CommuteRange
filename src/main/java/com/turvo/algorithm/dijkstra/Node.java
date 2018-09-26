@@ -1,6 +1,6 @@
-package com.logistics.algorithm.dijkstra;
+package com.turvo.algorithm.dijkstra;
 
-import com.logistics.algorithm.Entity;
+import com.turvo.algorithm.Entity;
 import lombok.Data;
 
 import java.util.ArrayList;

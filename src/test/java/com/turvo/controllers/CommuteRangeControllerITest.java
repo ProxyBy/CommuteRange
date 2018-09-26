@@ -1,6 +1,6 @@
-package com.logistics.controllers;
+package com.turvo.controllers;
 
-import com.logistics.repository.RouteRepository;
+import com.turvo.repository.RouteRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import org.junit.Test;

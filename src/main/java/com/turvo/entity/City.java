@@ -1,6 +1,6 @@
-package com.logistics.entity;
+package com.turvo.entity;
 
-import com.logistics.algorithm.Entity;
+import com.turvo.algorithm.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

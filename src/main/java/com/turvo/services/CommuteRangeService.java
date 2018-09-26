@@ -1,11 +1,11 @@
-package com.logistics.services;
+package com.turvo.services;
 
-import com.logistics.algorithm.CommuteRangeAlgorithm;
-import com.logistics.algorithm.dijkstra.DijkstraGraph;
-import com.logistics.algorithm.Entity;
-import com.logistics.entity.Route;
-import com.logistics.repository.CityRepository;
-import com.logistics.repository.RouteRepository;
+import com.turvo.algorithm.CommuteRangeAlgorithm;
+import com.turvo.algorithm.dijkstra.DijkstraGraph;
+import com.turvo.algorithm.Entity;
+import com.turvo.entity.Route;
+import com.turvo.repository.CityRepository;
+import com.turvo.repository.RouteRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

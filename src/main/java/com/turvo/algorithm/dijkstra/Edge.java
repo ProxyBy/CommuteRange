@@ -1,4 +1,4 @@
-package com.logistics.algorithm.dijkstra;
+package com.turvo.algorithm.dijkstra;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

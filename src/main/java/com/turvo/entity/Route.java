@@ -1,4 +1,4 @@
-package com.logistics.entity;
+package com.turvo.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

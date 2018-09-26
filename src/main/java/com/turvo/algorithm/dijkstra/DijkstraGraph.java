@@ -1,15 +1,13 @@
-package com.logistics.algorithm.dijkstra;
+package com.turvo.algorithm.dijkstra;
 
-import com.logistics.algorithm.CommuteRangeAlgorithm;
-import com.logistics.algorithm.Entity;
-import com.logistics.entity.Route;
+import com.turvo.Utils.NodeDistanceComparator;
+import com.turvo.algorithm.CommuteRangeAlgorithm;
+import com.turvo.algorithm.Entity;
+import com.turvo.entity.Route;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,20 +33,6 @@ public class DijkstraGraph implements CommuteRangeAlgorithm {
         }
     }
 
-    private int getNodeShortestDistanced(Map<Integer, Node> processedNodes, double rangeLimit) {
-        int storedNodeIndex = -1;
-        double storedDist = Integer.MAX_VALUE;
-
-        for (Map.Entry<Integer, Node> entry : processedNodes.entrySet()) {
-            double currentDist = entry.getValue().getDistanceFromSource();
-            if (!entry.getValue().isVisited() && currentDist < storedDist && currentDist <= rangeLimit) {
-                storedDist = currentDist;
-                storedNodeIndex = entry.getKey();
-            }
-        }
-        return storedNodeIndex;
-    }
-
     private List<Node> calculateDistances(int startItemId, double rangeLimit) {
         if (nodes.get(startItemId) == null) {
             log.error("There is no startItemId = {} in system", startItemId);
@@ -56,6 +40,7 @@ public class DijkstraGraph implements CommuteRangeAlgorithm {
         }
 
         List<Node> visitedNodes = new ArrayList<>();
+        Queue<Node> distanceCalculatedNodes = new PriorityQueue<>(10, new NodeDistanceComparator());
 
         Map<Integer, Node> processedNodes = nodes.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> {
@@ -66,28 +51,32 @@ public class DijkstraGraph implements CommuteRangeAlgorithm {
 
         int nextNode = startItemId;
         processedNodes.get(nextNode).setDistanceFromSource(0);
-        while (nextNode >= 0) {
+        processedNodes.get(nextNode).setVisited(true);
+        while(true) {
             Node node = processedNodes.get(nextNode);
             node.getEdges().stream().filter((edge) -> edge.getFromNodeIndex() == node.getEntity().getId()).forEach(edge -> {
                         if (!processedNodes.get(edge.getToNodeIndex()).isVisited()) {
                             double tentative = node.getDistanceFromSource() + edge.getLength();
 
-                            if (tentative < processedNodes.get(edge.getToNodeIndex()).getDistanceFromSource()) {
+                            if (tentative < processedNodes.get(edge.getToNodeIndex()).getDistanceFromSource()
+                                    && tentative <= rangeLimit) {
                                 processedNodes.get(edge.getToNodeIndex()).setDistanceFromSource(tentative);
+                                distanceCalculatedNodes.add(processedNodes.get(edge.getToNodeIndex()));
                             }
                         }
                     }
             );
 
             //all neighbours checked so node visited
-            node.setVisited(true);
-            if (nextNode != startItemId) {
+            if (!node.isVisited()) {
+                node.setVisited(true);
                 visitedNodes.add(node);
             }
             //next node must be with shortest distance
-            nextNode = getNodeShortestDistanced(processedNodes, rangeLimit);
+            if (!distanceCalculatedNodes.isEmpty()) {
+                nextNode = distanceCalculatedNodes.poll().getEntity().getId();
+            } else return visitedNodes;
         }
-        return visitedNodes;
     }
 
     @Override

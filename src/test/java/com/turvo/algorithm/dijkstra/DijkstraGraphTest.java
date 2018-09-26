@@ -1,8 +1,8 @@
-package com.logistics.algorithm.dijkstra;
+package com.turvo.algorithm.dijkstra;
 
-import com.logistics.algorithm.Entity;
-import com.logistics.entity.City;
-import com.logistics.entity.Route;
+import com.turvo.algorithm.Entity;
+import com.turvo.entity.City;
+import com.turvo.entity.Route;
 import org.junit.Before;
 import org.junit.Test;
 

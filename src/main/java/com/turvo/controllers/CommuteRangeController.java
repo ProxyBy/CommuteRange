@@ -1,7 +1,7 @@
-package com.logistics.controllers;
+package com.turvo.controllers;
 
-import com.logistics.model.CommuteRangeRequest;
-import com.logistics.services.CommuteRangeService;
+import com.turvo.model.CommuteRangeRequest;
+import com.turvo.services.CommuteRangeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
