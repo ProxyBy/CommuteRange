@@ -30,6 +30,8 @@ Asymptotic upper bound of the algorithm is O(m log(n)) where n –number of node
 
 3)	Number of nodes depends on size of JVM memory. Full graph must be loaded in memory.  
 
+4) ID of city must be positive number
+
 ## 3.	ARCHITECTURE DESIGN
 ### 3.1.	Software architecture
 Commute range system has MVC architecture 
