@@ -20,6 +20,9 @@ Let the node at which we are starting be called the initial node. Let the distan
 5.	If the destination node has been marked visited (when planning a route between two specific nodes) or if the smallest tentative distance among the nodes in the unvisited set is infinity (when planning a complete traversal; occurs when there is no connection between the initial node and remaining unvisited nodes), then stop. The algorithm has finished.
 6.	Otherwise, select the unvisited node that is marked with the smallest tentative distance, set it as the new "current node", and go back to step 3.
 
+Asymptotic upper bound of the algorithm is O(m log(n)) where n –number of nodes and m – number of edges
+
+
 ### 2.2.	Assumptions
 1)	Commute Range System does not use real time data. Data is presented as a static immutable dataset.
 
@@ -63,8 +66,16 @@ distance|	Double|	Not Null|	Commute time in minutes|
 | ------ | ------ | ------ |
 |localhost:8080/city	|JSON 	|JSON|
 
-### 4.4.	Data format
-#### 4.4.1.	Input data format
+### 4.4. Core interface
+|Name| Description |	
+| ------ | ------ | 
+CommuteRangeAlgorithm | Base structure for algorithm implementation. It can be Graph, Tree, etc|
+Entity| Main object that is used in the system as point. It can be city, people, country etc.|
+
+Implementation of CommuteRangeAlgorithm must implement getReachableEntities(int startItemId, double rangeLimit), where "startItemId" - start point of searching and "rangeLimit" - max value of distance. 
+
+### 4.5.	Data format
+#### 4.5.1.	Input data format
 |Field name|	Field type	| Description |	
 | ------ | ------ | ------ | 
 |startItemId|	Integer|	Index of city, which is start point of route |	
@@ -74,8 +85,7 @@ rangeLimit|	Double|	Commute time in minutes	|
 >  "rangeLimit": 60
 > }
 
-
-#### 4.4.2.	Output data format
+#### 4.5.2.	Output data format
 |Field name|	Field type|	Description|
 | ------ | ------ | ------ | 
 Id|	Integer|	Index of the reachable city|	
@@ -90,4 +100,7 @@ name|	String|	Name of the reachable city|
 >        "name": "NY"
 >    }
 >]
+
+ 
+
 	
