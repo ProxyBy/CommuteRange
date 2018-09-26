@@ -50,7 +50,7 @@ public class DijkstraGraph implements CommuteRangeAlgorithm {
 
         int nextNode = startItemId;
         processedNodes.get(nextNode).setDistanceFromSource(0);
-        while (true) {
+        while (nextNode >= 0) {
             Node node = processedNodes.get(nextNode);
             if (!node.isVisited()) {
                 node.getEdges().stream().filter((edge) -> edge.getFromNodeIndex() == node.getEntity().getId()).forEach(edge -> {
@@ -73,8 +73,9 @@ public class DijkstraGraph implements CommuteRangeAlgorithm {
             //next node must be with shortest distance
             if (!distanceCalculatedNodes.isEmpty()) {
                 nextNode = distanceCalculatedNodes.poll().getEntity().getId();
-            } else return reachableNodes;
+            } else nextNode=-1;
         }
+        return reachableNodes;
     }
 
     @Override
