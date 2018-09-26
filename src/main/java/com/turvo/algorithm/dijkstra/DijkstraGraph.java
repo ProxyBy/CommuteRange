@@ -39,9 +39,8 @@ public class DijkstraGraph implements CommuteRangeAlgorithm {
             throw new IllegalArgumentException("Not existed node");
         }
 
-        List<Node> visitedNodes = new ArrayList<>();
+        List<Node> reachableNodes = new ArrayList<>();
         Queue<Node> distanceCalculatedNodes = new PriorityQueue<>(10, new NodeDistanceComparator());
-
         Map<Integer, Node> processedNodes = nodes.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> {
                     Node newNode = new Node(e.getValue().getEntity());
@@ -51,31 +50,30 @@ public class DijkstraGraph implements CommuteRangeAlgorithm {
 
         int nextNode = startItemId;
         processedNodes.get(nextNode).setDistanceFromSource(0);
-        processedNodes.get(nextNode).setVisited(true);
-        while(true) {
+        while (true) {
             Node node = processedNodes.get(nextNode);
-            node.getEdges().stream().filter((edge) -> edge.getFromNodeIndex() == node.getEntity().getId()).forEach(edge -> {
-                        if (!processedNodes.get(edge.getToNodeIndex()).isVisited()) {
-                            double tentative = node.getDistanceFromSource() + edge.getLength();
-
-                            if (tentative < processedNodes.get(edge.getToNodeIndex()).getDistanceFromSource()
-                                    && tentative <= rangeLimit) {
-                                processedNodes.get(edge.getToNodeIndex()).setDistanceFromSource(tentative);
-                                distanceCalculatedNodes.add(processedNodes.get(edge.getToNodeIndex()));
+            if (!node.isVisited()) {
+                node.getEdges().stream().filter((edge) -> edge.getFromNodeIndex() == node.getEntity().getId()).forEach(edge -> {
+                            if (!processedNodes.get(edge.getToNodeIndex()).isVisited()) {
+                                double tentative = node.getDistanceFromSource() + edge.getLength();
+                                if (tentative < processedNodes.get(edge.getToNodeIndex()).getDistanceFromSource()
+                                        && tentative <= rangeLimit) {
+                                    processedNodes.get(edge.getToNodeIndex()).setDistanceFromSource(tentative);
+                                    distanceCalculatedNodes.add(processedNodes.get(edge.getToNodeIndex()));
+                                }
                             }
                         }
-                    }
-            );
-
-            //all neighbours checked so node visited
-            if (!node.isVisited()) {
+                );
+                //all neighbours checked so node visited
                 node.setVisited(true);
-                visitedNodes.add(node);
+                if (nextNode != startItemId) {
+                    reachableNodes.add(node);
+                }
             }
             //next node must be with shortest distance
             if (!distanceCalculatedNodes.isEmpty()) {
                 nextNode = distanceCalculatedNodes.poll().getEntity().getId();
-            } else return visitedNodes;
+            } else return reachableNodes;
         }
     }
 
